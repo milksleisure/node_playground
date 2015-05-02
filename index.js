@@ -11,6 +11,7 @@ function testing(errors, window) {
 
     // Post-processing functions
     util.show_graph(errors, window, 8888);
+    // util.save_svg(errors, window, 'testing.svg');
 };
 
 jsdom.env({
