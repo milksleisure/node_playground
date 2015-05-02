@@ -1,0 +1,25 @@
+{
+  "name": "play_d3",
+  "version": "0.0.1",
+  "description": "Playground for d3",
+  "main": "index.js",
+  "dependencies": {
+    "d3": "^3.5.5",
+    "jsdom": "^5.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "iojs index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milksleisure/node_playground.git"
+  },
+  "author": "Bing-Ru Wu",
+  "license": "GPLv2",
+  "bugs": {
+    "url": "https://github.com/milksleisure/node_playground/issues"
+  },
+  "homepage": "https://github.com/milksleisure/node_playground#readme",
+  "private" : "true"
+}

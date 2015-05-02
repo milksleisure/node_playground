@@ -1,0 +1,21 @@
+var jsdom = require('jsdom');
+var html = '<html><head></head><div id="d3_contain"></div><body></body></html>';
+var util = require('./utils.js');
+var simple_circle = require('./simple_circle.js');
+
+function testing(errors, window) {
+    var container = window.document.querySelector('#d3_contain');
+
+    // Print functions using D3
+    simple_circle(errors, container);
+
+    // Post-processing functions
+    util.show_graph(errors, window, 8888);
+};
+
+jsdom.env({
+    features: { QuerySelector : true },
+    html: html,
+    done: testing,
+});
+// no semi-column was harmed during this development
