@@ -1,4 +1,5 @@
 var d3 = require('d3');
+var fs = require('fs');
 var data = [4, 8, 15, 16, 23, 42];
 
 /* Scale function */
@@ -38,7 +39,6 @@ var svg_chart = function(error, container) {
         .append("svg:svg")
           .attr("width", "600")
           .attr("height", "480")
-          .style("float", "left")
         .selectAll("g")
           .data(data).enter()
             .append("g")
@@ -60,15 +60,59 @@ var svg_chart = function(error, container) {
       .style("text-anchor", "end")
 }
 
+var csv_chart = function(error, container, file) {
+    if(error) throw error;
+    var HEIGHT = 20;
+    csv_result = d3.csv.parse(fs.readFileSync(file, 'utf8'), function(d){
+        d.value = +d.value;
+        return d;
+    });
+
+    var new_scale = d3.scale.linear()
+          .domain([0, d3.max(csv_result, function(d) {return d.value})])
+          .range([4, 420]);
+
+    var groups =
+      d3.select(container)
+        .append("svg:svg")
+          .attr("width", "600")
+          .attr("height", "480")
+        .selectAll("g")
+          .data(csv_result).enter()
+            .append("g")
+              .attr("transform", function(d, i) {return "translate(0," + i * HEIGHT + ")";});
+
+    /* Create the bar & the text */
+    groups.append("rect")
+      .attr("width", function(d) {return new_scale(d.value);})
+      .attr("height", HEIGHT - 1)
+      .style("fill", "#4682B4");
+
+    groups.append("text")
+      .attr("x", function(d) {return new_scale(d.value) - 3;})
+      .attr("y", HEIGHT / 2)
+      .attr("dy", ".35em")
+      .text(function(d) {return d.value;})
+      .style("fill", "white")
+      .style("font", "10px sans-serif")
+      .style("text-anchor", "end")
+}
+
 module.exports = function(error, container) {
     if(error) throw error;
 
-    /* Simple histogram */
-    div_chart(error, container);
+    // /* Simple histogram */
+    // div_chart(error, container);
 
-    /* Create some space*/
-    d3.select(container).append("div").style("padding", "1em");
+    // /* Create some space*/
+    // d3.select(container).append("div").style("padding", "1em");
 
-    /* Using SVG */
-    svg_chart(error, container);
+    // /* Using SVG */
+    // svg_chart(error, container);
+
+    // /* Create some space*/
+    // d3.select(container).append("div").style("padding", "1em");
+
+    /* Using CSV */
+    csv_chart(error, container, "./misc/data.csv");
 }
